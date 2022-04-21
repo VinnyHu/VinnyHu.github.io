@@ -16,20 +16,23 @@
   <meta name="author" content="Vinny Hu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="概述之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。 疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用pytho">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/04/21/hello-world/index.html">
+<meta property="og:title" content="word2vec源码剖析">
+<meta property="og:url" content="http://example.com/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
 <meta property="og:site_name" content="Vinny的小黑屋">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="概述之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。 疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用pytho">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-21T12:00:44.436Z">
-<meta property="article:modified_time" content="2022-04-21T12:00:44.436Z">
+<meta property="og:image" content="http://example.com/img/word2vec.png">
+<meta property="article:published_time" content="2022-04-21T13:57:13.000Z">
+<meta property="article:modified_time" content="2022-04-21T14:08:13.610Z">
 <meta property="article:author" content="Vinny Hu">
+<meta property="article:tag" content="源码剖析">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/word2vec.png">
   
   
-  <title>Hello World - Vinny的小黑屋</title>
+  <title>word2vec源码剖析 - Vinny的小黑屋</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +189,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="word2vec源码剖析"></span>
           
         </div>
 
@@ -197,7 +200,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-21 20:00" pubdate>
+        <time datetime="2022-04-21 21:57" pubdate>
           2022年4月21日 晚上
         </time>
       </span>
@@ -209,7 +212,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          367 字
+          444 字
         
       </span>
     
@@ -266,23 +269,14 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">word2vec源码剖析</h1>
             
             <div class="markdown-body">
               
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+              <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。</p>
+<p>疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用python+numpy的方式复现了word2vec。</p>
+<p>本文的阅读需要你对word2vec的原理有充分的了解，知道hierarchical softmax、negative sampling具体的理论细节，理解CBOW、Skip-Gram的具体计算形式。因为迄今为止，我还没有发现网上有任何资料比<em>《word2vec数学原理》</em> 讲的更好，所以如果你不熟悉word2vec原理，我强烈推荐你阅读一下。</p>
+<p>搜索公众号“Vinny的小黑屋”，后台回复“word2vec原理”，我已经替你下载好了<em>《word2vec数学原理》</em> 的pdf文件。</p>
 
               
             </div>
@@ -290,6 +284,13 @@
             <div>
               <div class="post-metas my-3">
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/">#源码剖析</a>
+      
+    </div>
   
 </div>
 
@@ -299,8 +300,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2022/04/21/hello-world/</div>
+      <div>word2vec源码剖析</div>
+      <div>http://example.com/2022/04/21/word2vec源码剖析/</div>
     </div>
     <div class="license-meta">
       
@@ -342,15 +343,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/" title="word2vec源码剖析">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">word2vec源码剖析</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/04/21/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
