@@ -16,20 +16,21 @@
   <meta name="author" content="Vinny Hu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="前言最近几年感觉学术界出现了一大堆奇奇怪怪的everything learning，比如meta learning、lifelong learning、transfer learning、multitask learning、active learning… 就先从meta learning下手吧，看完本文，你应该会有如下收获：  什么是meta learning？ meta learning跟其">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2022/04/21/hello-world/index.html">
+<meta property="og:title" content="元学习综述">
+<meta property="og:url" content="http://example.com/2022/04/23/%E5%85%83%E5%AD%A6%E4%B9%A0%E7%BB%BC%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Vinny的小黑屋">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="前言最近几年感觉学术界出现了一大堆奇奇怪怪的everything learning，比如meta learning、lifelong learning、transfer learning、multitask learning、active learning… 就先从meta learning下手吧，看完本文，你应该会有如下收获：  什么是meta learning？ meta learning跟其">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-21T12:00:44.436Z">
-<meta property="article:modified_time" content="2022-04-21T12:00:44.436Z">
+<meta property="article:published_time" content="2022-04-23T03:47:32.000Z">
+<meta property="article:modified_time" content="2022-04-23T04:00:49.840Z">
 <meta property="article:author" content="Vinny Hu">
+<meta property="article:tag" content="综述系列">
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>Hello World - Vinny的小黑屋</title>
+  <title>元学习综述 - Vinny的小黑屋</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +187,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="元学习综述"></span>
           
         </div>
 
@@ -197,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-21 20:00" pubdate>
-          2022年4月21日 晚上
+        <time datetime="2022-04-23 11:47" pubdate>
+          2022年4月23日 中午
         </time>
       </span>
     
@@ -209,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          367 字
+          305 字
         
       </span>
     
@@ -220,7 +221,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -266,30 +267,32 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">元学习综述</h1>
             
             <div class="markdown-body">
               
-              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近几年感觉学术界出现了一大堆奇奇怪怪的everything learning，比如meta learning、lifelong learning、transfer learning、multitask learning、active learning…</p>
+<p>就先从meta learning下手吧，看完本文，你应该会有如下收获：</p>
+<ul>
+<li>什么是meta learning？</li>
+<li>meta learning跟其他相关领域（例如，transfer learning、multitask learning等）有啥区别？</li>
+<li>meta learning领域研究的核心问题是什么？</li>
+<li>meta learning 有哪些研究方法？</li>
+</ul>
+<h2 id="what’s-meta-learning？"><a href="#what’s-meta-learning？" class="headerlink" title="what’s meta learning？"></a>what’s meta learning？</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>
               
             </div>
             <hr/>
             <div>
               <div class="post-metas my-3">
   
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%BB%BC%E8%BF%B0%E7%B3%BB%E5%88%97/">#综述系列</a>
+      
+    </div>
   
 </div>
 
@@ -299,8 +302,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2022/04/21/hello-world/</div>
+      <div>元学习综述</div>
+      <div>http://example.com/2022/04/23/元学习综述/</div>
     </div>
     <div class="license-meta">
       
@@ -312,7 +315,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年4月21日</div>
+          <div>2022年4月23日</div>
         </div>
       
       
@@ -342,15 +345,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/" title="word2vec源码剖析">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">word2vec源码剖析</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/04/22/FewShotLearning%E7%BB%BC%E8%BF%B0/" title="FewShotLearning综述">
+                        <span class="hidden-mobile">FewShotLearning综述</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

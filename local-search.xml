@@ -4,17 +4,17 @@
   
   
   <entry>
-    <title>word2vec源码剖析</title>
-    <link href="/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"/>
-    <url>/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/</url>
+    <title>元学习综述</title>
+    <link href="/2022/04/23/%E5%85%83%E5%AD%A6%E4%B9%A0%E7%BB%BC%E8%BF%B0/"/>
+    <url>/2022/04/23/%E5%85%83%E5%AD%A6%E4%B9%A0%E7%BB%BC%E8%BF%B0/</url>
     
-    <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。</p><p>疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用python+numpy的方式复现了word2vec。</p><p>本文的阅读需要你对word2vec的原理有充分的了解，知道hierarchical softmax、negative sampling具体的理论细节，理解CBOW、Skip-Gram的具体计算形式。因为迄今为止，我还没有发现网上有任何资料比<em>《word2vec数学原理》</em> 讲的更好，所以如果你不熟悉word2vec原理，我强烈推荐你阅读一下。</p><p>搜索公众号“Vinny的小黑屋”，后台回复“word2vec原理”，我已经替你下载好了<em>《word2vec数学原理》</em> 的pdf文件。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近几年感觉学术界出现了一大堆奇奇怪怪的everything learning，比如meta learning、lifelong learning、transfer learning、multitask learning、active learning…</p><p>就先从meta learning下手吧，看完本文，你应该会有如下收获：</p><ul><li>什么是meta learning？</li><li>meta learning跟其他相关领域（例如，transfer learning、multitask learning等）有啥区别？</li><li>meta learning领域研究的核心问题是什么？</li><li>meta learning 有哪些研究方法？</li></ul><h2 id="what’s-meta-learning？"><a href="#what’s-meta-learning？" class="headerlink" title="what’s meta learning？"></a>what’s meta learning？</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>]]></content>
     
     
     
     <tags>
       
-      <tag>源码剖析</tag>
+      <tag>综述系列</tag>
       
     </tags>
     
@@ -23,13 +23,38 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2022/04/21/hello-world/"/>
-    <url>/2022/04/21/hello-world/</url>
+    <title>FewShotLearning综述</title>
+    <link href="/2022/04/22/FewShotLearning%E7%BB%BC%E8%BF%B0/"/>
+    <url>/2022/04/22/FewShotLearning%E7%BB%BC%E8%BF%B0/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>注：本文同步更新在“Vinny的小黑屋”公众号，公众号阅读更加方便，欢迎订阅公众号随时获取最新内容。</p><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>综述系列</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>word2vec源码剖析</title>
+    <link href="/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/"/>
+    <url>/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>注：本篇word2vec源码剖析，可能是你能在网上找到的最详细的一个版本了，至今我还没有发现哪篇文章对word2vec的源码进行逐行的透彻讲解。</strong></p><p>之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。</p><p>疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用python+numpy的方式复现了word2vec，不过为了更清晰的描述算法原理，我只实现了单进程版的，详细的细节请参考readme文件。</p><p><strong>MyWord2Vec源码的地址</strong>：<a href="https://github.com/VinnyHu/MyWord2Vec">https://github.com/VinnyHu/MyWord2Vec</a></p><p>本文的阅读需要你对word2vec的原理有充分的了解，知道hierarchical softmax、negative sampling具体的理论细节，理解CBOW、Skip-Gram的具体计算形式。因为迄今为止，我还没有发现网上有任何资料比<em>《word2vec数学原理》</em> 讲的更好，所以如果你不熟悉word2vec原理，我强烈推荐你阅读一下。</p><p>搜索公众号“Vinny的小黑屋”，后台回复“word2vec原理”，我已经替你下载好了<em>《word2vec数学原理》</em> 的pdf文件。</p><p>本文最终也会被整理成可以阅读的pdf文件，请关注“Vinny的小黑屋”，后台回复“word2vec源码解析”，即可获得本文的pdf版本。</p><p>通过阅读本文，你可以有以下收获：</p><ul><li>彻底搞懂word2vec模型的实现细节，填充上理论与实践之间的gap。</li><li>学会如何手动构造一颗Huffman Tree。</li><li>学会negative sampling是如何实现的。</li><li>面试的时候再也不用怕word2vec相关问题了！</li><li>你还会发现word2vec源码中的一些bug：）</li></ul><h2 id="word2vec源码概述"><a href="#word2vec源码概述" class="headerlink" title="word2vec源码概述"></a>word2vec源码概述</h2>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>源码剖析</tag>
+      
+    </tags>
     
   </entry>
   

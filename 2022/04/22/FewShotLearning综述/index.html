@@ -16,23 +16,21 @@
   <meta name="author" content="Vinny Hu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言注：本篇word2vec源码剖析，可能是你能在网上找到的最详细的一个版本了，至今我还没有发现哪篇文章对word2vec的源码进行逐行的透彻讲解。 之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。 疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码">
+    <meta name="description" content="注：本文同步更新在“Vinny的小黑屋”公众号，公众号阅读更加方便，欢迎订阅公众号随时获取最新内容。 概述">
 <meta property="og:type" content="article">
-<meta property="og:title" content="word2vec源码剖析">
-<meta property="og:url" content="http://example.com/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/index.html">
+<meta property="og:title" content="FewShotLearning综述">
+<meta property="og:url" content="http://example.com/2022/04/22/FewShotLearning%E7%BB%BC%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Vinny的小黑屋">
-<meta property="og:description" content="前言注：本篇word2vec源码剖析，可能是你能在网上找到的最详细的一个版本了，至今我还没有发现哪篇文章对word2vec的源码进行逐行的透彻讲解。 之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。 疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码">
+<meta property="og:description" content="注：本文同步更新在“Vinny的小黑屋”公众号，公众号阅读更加方便，欢迎订阅公众号随时获取最新内容。 概述">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/img/word2vec.png">
-<meta property="article:published_time" content="2022-04-21T13:57:13.000Z">
-<meta property="article:modified_time" content="2022-04-23T12:53:33.428Z">
+<meta property="article:published_time" content="2022-04-22T07:27:57.000Z">
+<meta property="article:modified_time" content="2022-04-22T13:42:53.934Z">
 <meta property="article:author" content="Vinny Hu">
-<meta property="article:tag" content="源码剖析">
+<meta property="article:tag" content="综述系列">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/img/word2vec.png">
   
   
-  <title>word2vec源码剖析 - Vinny的小黑屋</title>
+  <title>FewShotLearning综述 - Vinny的小黑屋</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -183,13 +181,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/word2vec.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="word2vec源码剖析"></span>
+            <span id="subtitle" data-typed-text="FewShotLearning综述"></span>
           
         </div>
 
@@ -200,8 +198,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-04-21 21:57" pubdate>
-          2022年4月21日 晚上
+        <time datetime="2022-04-22 15:27" pubdate>
+          2022年4月22日 下午
         </time>
       </span>
     
@@ -212,7 +210,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          838 字
+          52 字
         
       </span>
     
@@ -223,7 +221,7 @@
         
         
         
-          7 分钟
+          1 分钟
         
       </span>
     
@@ -269,26 +267,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">word2vec源码剖析</h1>
+            <h1 style="display: none">FewShotLearning综述</h1>
             
             <div class="markdown-body">
               
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>注：本篇word2vec源码剖析，可能是你能在网上找到的最详细的一个版本了，至今我还没有发现哪篇文章对word2vec的源码进行逐行的透彻讲解。</strong></p>
-<p>之前对word2vec的理解，基本都局限于《word2vec数学原理》这个资料中的理论介绍，并没有特意的去学习源码中的细节，其实在看理论的资料时对很多具体的问题还是有种把握不住的朦胧感。</p>
-<p>疫情期间被封锁在学校正好闲暇时间比较多，就翻出来好好读了下源码，并且秉承着“I can not create it，I can not understand it”的原则，我根据google的源码用python+numpy的方式复现了word2vec，不过为了更清晰的描述算法原理，我只实现了单进程版的，详细的细节请参考readme文件。</p>
-<p><strong>MyWord2Vec源码的地址</strong>：<a target="_blank" rel="noopener" href="https://github.com/VinnyHu/MyWord2Vec">https://github.com/VinnyHu/MyWord2Vec</a></p>
-<p>本文的阅读需要你对word2vec的原理有充分的了解，知道hierarchical softmax、negative sampling具体的理论细节，理解CBOW、Skip-Gram的具体计算形式。因为迄今为止，我还没有发现网上有任何资料比<em>《word2vec数学原理》</em> 讲的更好，所以如果你不熟悉word2vec原理，我强烈推荐你阅读一下。</p>
-<p>搜索公众号“Vinny的小黑屋”，后台回复“word2vec原理”，我已经替你下载好了<em>《word2vec数学原理》</em> 的pdf文件。</p>
-<p>本文最终也会被整理成可以阅读的pdf文件，请关注“Vinny的小黑屋”，后台回复“word2vec源码解析”，即可获得本文的pdf版本。</p>
-<p>通过阅读本文，你可以有以下收获：</p>
-<ul>
-<li>彻底搞懂word2vec模型的实现细节，填充上理论与实践之间的gap。</li>
-<li>学会如何手动构造一颗Huffman Tree。</li>
-<li>学会negative sampling是如何实现的。</li>
-<li>面试的时候再也不用怕word2vec相关问题了！</li>
-<li>你还会发现word2vec源码中的一些bug：）</li>
-</ul>
-<h2 id="word2vec源码概述"><a href="#word2vec源码概述" class="headerlink" title="word2vec源码概述"></a>word2vec源码概述</h2>
+              <p>注：本文同步更新在“Vinny的小黑屋”公众号，公众号阅读更加方便，欢迎订阅公众号随时获取最新内容。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>
               
             </div>
             <hr/>
@@ -299,7 +283,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/">#源码剖析</a>
+        <a href="/tags/%E7%BB%BC%E8%BF%B0%E7%B3%BB%E5%88%97/">#综述系列</a>
       
     </div>
   
@@ -311,8 +295,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>word2vec源码剖析</div>
-      <div>http://example.com/2022/04/21/word2vec源码剖析/</div>
+      <div>FewShotLearning综述</div>
+      <div>http://example.com/2022/04/22/FewShotLearning综述/</div>
     </div>
     <div class="license-meta">
       
@@ -324,7 +308,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年4月21日</div>
+          <div>2022年4月22日</div>
         </div>
       
       
@@ -354,15 +338,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/04/22/FewShotLearning%E7%BB%BC%E8%BF%B0/" title="FewShotLearning综述">
+                      <a href="/2022/04/23/%E5%85%83%E5%AD%A6%E4%B9%A0%E7%BB%BC%E8%BF%B0/" title="元学习综述">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">FewShotLearning综述</span>
+                        <span class="hidden-mobile">元学习综述</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/04/21/word2vec%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/" title="word2vec源码剖析">
+                        <span class="hidden-mobile">word2vec源码剖析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
